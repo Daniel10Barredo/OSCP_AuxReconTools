@@ -60,8 +60,7 @@ def ip_tun0():
 				direccion_ip = partes[1].split("/")[0]
 				return direccion_ip
 	except subprocess.CalledProcessError:
-		pass
-	return "0.0.0.0"
+		return "IP_KALI"
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
