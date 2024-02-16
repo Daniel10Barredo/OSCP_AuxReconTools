@@ -9,12 +9,13 @@ IP_KALI="{IP_KALI}"
 #  * Available functions *
 #-------------------------------------------------------
 function recon.help(){
+    banner
     echo """
- [*] Auxiliar Environment tools:
+ [*] Auxiliary tools:
     - aux.upload [file]               : Send files to http server via post
     - aux.download [file]             : Perform GET to fetch files
 
- [*] Recon Environment tools
+ [*] Auxiliary recon:
     - recon.dateScan                  : Files modified between two dates
     - recon.dateLast                  : Files modified less than 15min ago
     - recon.dateSuspicious            : Suspicious timestamp binaries (IPPSEC)
@@ -29,7 +30,7 @@ function recon.help(){
     - recon.process                   : Current processes information
     - recon.networks                  : Network information
 
- [*] Privesc tools:
+ [*] Privesc recon:
     - priv.setuid                     : Search for SETUID binaries
     - priv.capabilities               : Search for present capabilities
     - priv.writable                   : Search for manipulable locations
@@ -339,7 +340,7 @@ function priv.writable {
     echo "##############################################################"
     echo "                 User-Writable Locations"
     echo "##############################################################"
-	find / -writable -type f ! -path "/proc/*" ! -path "/dev/*" ! -path "/run/*" ! -path "/sys/*" 2>/dev/null
+	find / -writable ! -path "/proc/*" ! -path "/dev/*" ! -path "/run/*" ! -path "/sys/*" -exec ls -adl {} \; 2>/dev/null
 }
 
 
@@ -387,7 +388,7 @@ function priv.crontabs {
     echo "##############################################################"
     echo "              Scheduled Tasks on the System"
     echo "##############################################################"
-    ls -la /etc/cron*
+    find /etc/cron* -type f -not -name "*.placeholder" -exec bash -c "echo;echo;echo ---------------------------------;echo {};echo ---------------------------------;cat {}" \;
 	echo ""
     echo "##############################################################"
     echo "                Scheduled Tasks in General"
@@ -431,6 +432,17 @@ function tree {
     echo ""
 }
 
+check_ip_kali() {
+    if [[ "$IP_KALI" =~ "IP_KALI" ]]; then
+        clear
+        echo ""
+        echo -n " [>] Please enter the IP address for Kali: "
+        read IP_KALI
+        export IP_KALI
+        echo ""
+    fi
+}
+
 
 #------------------------------------------
 #  Some Aliases
@@ -438,5 +450,6 @@ function tree {
 alias ll='ls -lh --group-dirs=first --color=auto'
 
 
-banner
+
+check_ip_kali
 recon.help

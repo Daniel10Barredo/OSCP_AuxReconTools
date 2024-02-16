@@ -22,6 +22,7 @@ function recon.help
     Write-Host '    - recon.portscan <host> [1-1024]  : Perform port scanning'
     Write-Host '    - recon.pingscan 10.10.10.        : Perform ping scan of /24 subnet'
     Write-Host '    - recon.pspy                      : Similar to pspy script'
+    Write-Host '    - recon.servInfo                  : Information abaut a server'
     Write-Host ''
     Write-Host '[*] General Recon:'
     Write-Host '    - recon.sys                       : System information'
@@ -32,7 +33,7 @@ function recon.help
     Write-Host '    - recon.networks                  : Network information'
     Write-Host '    - recon.acl                       : File permission information'
     Write-Host ''
-    Write-Host '[*] Privesc Tools:'
+    Write-Host '[*] Privesc Recon:'
     Write-Host '    - priv.installElev                : AlwaysInstallElevated privilege'
     Write-Host '    - priv.serv.dir                   : Service directory privilege'
     Write-Host '    - priv.serv.reg                   : Service registry privilege'
@@ -47,7 +48,7 @@ function recon.help
     Write-Host '    - priv.search.events              : Credential in events (Admin.) privilege'
     Write-Host '    - priv.autorun                    : Scheduled tasks privilege'
     Write-Host ''
-    Write-Host '[*] AD Tools:'
+    Write-Host '[*] AD Recon:'
     Write-Host '    - ad.psremote                     : Remote PowerShell privilege'
     Write-Host '    - ad.computers                    : Domain computers privilege'
     Write-Host '    - ad.users                        : Domain users privilege'
@@ -189,6 +190,28 @@ function recon.pingscan(){
 
     1..225 | % {"$ip$($_): $(Test-Connection -count 1 -comp $ip$($_) -quiet)"}
 }
+
+
+
+#------------------------------------------
+#  * Info about a service *
+#------------------------------------------
+function recon.servInfo(){
+    param (
+        [string]$service
+    )
+
+    # Verify name is provided
+    if (-not $service) {
+        Write-Host ""
+        Write-Host " [>] Information about a service:"
+        Write-Host "        recon.servInfo <serviceName>"
+        return
+    }
+
+    Get-WMIObject -Class win32_service |Where-Object { $_.Name -eq $service } | select *
+}
+
 
 
 #----------------------------------------------------------
@@ -831,5 +854,16 @@ function Banner {
     Write-Host ""
 }
 
-Banner
+
+
+#------------------------------------------
+#  * Check if kali ip is seted *
+#------------------------------------------
+if ($IP_KALI -match "IP_KALI") {
+    Clear-Host
+    Write-Host ""
+    Write-Host " [>] Please enter the IP address for Kali: " -NoNewline
+    $IP_KALI = Read-Host
+    Write-Host ""
+}
 recon.help

@@ -18,11 +18,12 @@ os.system("clear")
 #Important banner
 print("""
  -----------------------------------------------------------------------------------------------
-	___  ____ _  _ _  _ _   _    _  _ ___ ___ ___     ____ ____ ____ _  _ ____ ____ 
-	|  \ |__| |\ | |\ |  \_/     |__|  |   |  |__]    [__  |___ |__/ |  | |___ |__/ 
-	|__/ |  | | \| | \|   |      |  |  |   |  |       ___] |___ |  \  \/  |___ |  \ 
+               _  _ ___ ___ ___     ____ _  _ _  _    ____ ____ _  _ ____ ____ 
+               |__|  |   |  |__]    |__| |  |  \/     [__  |__/ |  | |___ |__/ 
+               |  |  |   |  |       |  | |__| _/\_    ___] |  \  \/  |___ |  \ 
                                                                                
  -----------------------------------------------------------------------------------------------
+                                                                                     DannyDB@~>
 """)
 
 #Default port
@@ -31,7 +32,7 @@ if len(sys.argv) == 2:
 	PORT = int(sys.argv[1])
 
 
-#Direct access files
+#Direct access files  <- ** ADD YOUR OWN SHORTCUTS HEARE **
 SHORTCUTS = {
 	#------------------For windows------------------------------------------
 	'/mm.exe':'~/git/mimikatz64.exe',								#Mimikatz
@@ -93,7 +94,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 		self.send_response(200)
 		self.end_headers()
 		self.wfile.write(b'Received!!')
-		print(" [*] Danny -> File received: ", filename)
+		print(" [*] File received: ", filename)
 
 	def send_file(self, file_path):
 		try:
